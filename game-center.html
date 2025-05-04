@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PlayStation Lounge - Miray Portal</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .ps-lounge-section {
+        margin-bottom: 40px;
+      }
+      
+      .ps-lounge-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+      
+      .ps-lounge-item {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+      }
+      
+      .ps-lounge-item:hover {
+        transform: translateY(-5px);
+      }
+      
+      .ps-lounge-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+      
+      .ps-lounge-content {
+        padding: 15px;
+      }
+      
+      .ps-lounge-title {
+        font-size: 1.2rem;
+        color: var(--primary);
+        margin-bottom: 5px;
+      }
+      
+      .ps-lounge-description {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+      
+      .info-container {
+        background-color: var(--primary-light);
+        padding: 20px;
+        border-radius: var(--border-radius);
+        margin-top: 20px;
+      }
+      
+      .hours-list {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .hours-list li {
+        padding: 8px 0;
+        border-bottom: 1px dashed #ccc;
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .hours-list li:last-child {
+        border-bottom: none;
+      }
+      
+      @media (max-width: 768px) {
+        .ps-lounge-gallery {
+          grid-template-columns: 1fr;
+        }
+      }
+      
+      #main-gaming-image {
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-content">
+          <img src="img/logo.png" alt="Miray Cruises" class="logo" />
+          <h1>PLAYSTATION LOUNGE</h1>
+          <p>Experience the ultimate gaming adventure at sea</p>
+        </div>
+      </header>
+
+      <a href="index.html" class="back-btn">← Back to Portal Home</a>
+
+      <main>
+        <section class="content-section">
+          <div class="section-header">
+            <h2>PlayStation Gaming Lounge</h2>
+            <div class="section-icon">🎮</div>
+          </div>
+          
+          <p>Welcome to our state-of-the-art PlayStation Lounge, where you can enjoy the latest PlayStation 5 games in a comfortable environment with fellow gamers.</p>
+          
+          <div class="main-lounge-gallery">
+            <div class="ps-lounge-item" id="main-gaming-area">
+              <img src="https://placehold.co/600x400?text=PlayStation+Lounge" alt="PlayStation Lounge" class="ps-lounge-image" id="main-gaming-image" style="height: 300px;">
+              <div class="ps-lounge-content">
+                <h3 class="ps-lounge-title">Main Gaming Area</h3>
+                <p class="ps-lounge-description">Multiple PlayStation 5 consoles with 4K displays and comfortable seating for extended gaming sessions.</p>
+                <button class="change-photo-btn admin-only" id="change-main-photo" style="display: none;" title="Change photo">Change Photo</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="info-container">
+            <h3>Opening Hours & Information</h3>
+            <ul class="hours-list" id="hours-list">
+              <li><span>Morning Session</span> <span>10:00 - 13:00</span></li>
+              <li><span>Afternoon Session</span> <span>14:00 - 18:00</span></li>
+              <li><span>Evening Session</span> <span>19:00 - 23:00</span></li>
+              <li><span>Location</span> <span>Deck 8, Forward</span></li>
+            </ul>
+            <button id="edit-hours" class="admin-only" style="display: none;">Edit Hours</button>
+            <h3 style="margin-top: 20px;">Pricing</h3>
+            <ul class="hours-list">
+              <li><span>1 Person (1 hour)</span> <span>10 Euros</span></li>
+              <li><span>2 Persons (1 hour)</span> <span>15 Euros</span></li>
+              <li><span>Cruise Package (unlimited access)</span> <span>50 Euros</span></li>
+            </ul>
+            <p><strong>Note:</strong> Sessions may be reserved at the lounge entrance. The Cruise Package offers the best value with unlimited access throughout your voyage.</p>
+          </div>
+        </section>
+        
+        <section class="content-section">
+          <div class="section-header">
+            <h2>Featured Games</h2>
+            <div class="section-icon">🕹️</div>
+            <button id="add-game" class="admin-only" style="display: none;">Add Game</button>
+          </div>
+          
+          <div class="ps-lounge-gallery">
+            <div class="ps-lounge-item" data-id="game-1">
+              <div class="ps-placeholder-image" style="background-color: #0066cc; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; height: 200px;">
+                EA SPORTS FC 24
+              </div>
+              <div class="ps-lounge-content">
+                <h3 class="ps-lounge-title">EA SPORTS FC 24</h3>
+                <p class="ps-lounge-description">Experience the world's game with authentic clubs, leagues, and players.</p>
+                <button class="delete-game-btn admin-only" style="display: none;" title="Delete game">✕</button>
+                <button class="change-photo-btn admin-only" style="display: none;" title="Change photo">Change Photo</button>
+              </div>
+            </div>
+            
+            <div class="ps-lounge-item" data-id="game-2">
+              <div class="ps-placeholder-image" style="background-color: #cc0000; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; height: 200px;">
+                TEKKEN 8
+              </div>
+              <div class="ps-lounge-content">
+                <h3 class="ps-lounge-title">Tekken 8</h3>
+                <p class="ps-lounge-description">The latest chapter in the legendary fighting game franchise with stunning visuals.</p>
+                <button class="delete-game-btn admin-only" style="display: none;" title="Delete game">✕</button>
+                <button class="change-photo-btn admin-only" style="display: none;" title="Change photo">Change Photo</button>
+              </div>
+            </div>
+            
+            <div class="ps-lounge-item" data-id="game-3">
+              <div class="ps-placeholder-image" style="background-color: #990099; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; height: 200px;">
+                MORTAL KOMBAT 1
+              </div>
+              <div class="ps-lounge-content">
+                <h3 class="ps-lounge-title">Mortal Kombat 1</h3>
+                <p class="ps-lounge-description">Discover a reborn Mortal Kombat Universe with a new fighting system and fatalities.</p>
+                <button class="delete-game-btn admin-only" style="display: none;" title="Delete game">✕</button>
+                <button class="change-photo-btn admin-only" style="display: none;" title="Change photo">Change Photo</button>
+              </div>
+            </div>
+            
+            <div class="ps-lounge-item" data-id="game-4">
+              <div class="ps-placeholder-image" style="background-color: #cc0000; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; height: 200px;">
+                SPIDER-MAN REMASTERED
+              </div>
+              <div class="ps-lounge-content">
+                <h3 class="ps-lounge-title">Spider-Man Remastered</h3>
+                <p class="ps-lounge-description">Swing through New York as the iconic hero with enhanced graphics and features.</p>
+                <button class="delete-game-btn admin-only" style="display: none;" title="Delete game">✕</button>
+                <button class="change-photo-btn admin-only" style="display: none;" title="Change photo">Change Photo</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="info-container" style="margin-top: 25px; background-color: #f5f5f5; padding: 20px; border-radius: 10px; border-left: 5px solid #0066cc;">
+            <h3 style="margin-top: 0; color: #0066cc;">Latest Games Available!</h3>
+            <p>Dear Passengers, we're excited to inform you that our PlayStation Lounge is regularly updated with the newest game releases. In addition to the featured titles shown above, you'll find many more recent and popular games to enjoy during your voyage.</p>
+            <p>Our current collection includes the latest sports titles, action adventures, racing games, and popular franchises. Visit the PlayStation Lounge on Deck 8 to discover all available games and enjoy your gaming experience at sea.</p>
+          </div>
+          
+          <p class="note">Games are subject to availability. Additional titles are available in the lounge.</p>
+        </section>
+
+        <section class="content-section">
+          <div class="section-header">
+            <h2>News & Announcements</h2>
+            <div class="section-icon">📢</div>
+            <button id="add-news" class="admin-only" style="display: none;">Add Announcement</button>
+          </div>
+          
+          <div class="news-content" id="news-content">
+            <div class="news-item" data-id="news-1">
+              <span class="news-date">April 26, 2025</span>
+              <h4>Welcome to PlayStation Lounge!</h4>
+              <p>Experience the latest PlayStation 5 games in our state-of-the-art gaming lounge. Book your session now!</p>
+              <button class="delete-news-btn admin-only" style="display: none;" title="Delete announcement">✕</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-section">
+          <div class="section-header">
+            <h2>How to Find Us</h2>
+            <div class="section-icon">🗺️</div>
+          </div>
+          <div class="deck-plan-container">
+            <div class="deck-plan-image" style="position: relative; width: 100vw; max-width: 800px; height: 60vw; max-height: 600px; margin: 0 auto; overflow: visible;">
+              <img src="img/deck8-plan-modern.png" alt="Deck 8 Plan - Modern" id="deck-plan" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(90deg); border-radius: 10px; box-shadow: 0 4px 24px rgba(0,0,0,0.12); display: block; max-width: none; max-height: none; width: auto; height: auto;">
+            </div>
+            <div class="directions-container">
+              <h3>Getting to the Game Center</h3>
+              <div class="direction-steps">
+                <div class="direction-step">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <h4>Take the Elevator</h4>
+                    <p>Use any elevator to reach Deck 8.</p>
+                  </div>
+                </div>
+                <div class="direction-step">
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <h4>Exit the Elevator</h4>
+                    <p>Follow the red arrows on the map to the Game Center.</p>
+                  </div>
+                </div>
+                <div class="direction-step">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <h4>Arrive at Game Center</h4>
+                    <p>The Game Center is located at the forward section of Deck 8.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>© 2025 Miray Cruises. All rights reserved.</p>
+        <p class="wifi-notice">Connected to Miray Guest WiFi</p>
+      </footer>
+    </div>
+
+    <!-- Add Game Modal -->
+    <div id="game-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h3>Add New Game</h3>
+        <form id="game-form">
+          <div class="form-group">
+            <label for="game-title">Title</label>
+            <input type="text" id="game-title" required>
+          </div>
+          <div class="form-group">
+            <label for="game-description">Description</label>
+            <textarea id="game-description" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="game-color">Background Color</label>
+            <input type="color" id="game-color" value="#0066cc" required>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-game" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Hours Modal -->
+    <div id="hours-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h3>Edit Working Hours</h3>
+        <form id="hours-form">
+          <div class="hours-form-group">
+            <label>Morning Session</label>
+            <div class="time-inputs">
+              <input type="time" id="morning-start" required>
+              <span>to</span>
+              <input type="time" id="morning-end" required>
+            </div>
+          </div>
+          <div class="hours-form-group">
+            <label>Afternoon Session</label>
+            <div class="time-inputs">
+              <input type="time" id="afternoon-start" required>
+              <span>to</span>
+              <input type="time" id="afternoon-end" required>
+            </div>
+          </div>
+          <div class="hours-form-group">
+            <label>Evening Session</label>
+            <div class="time-inputs">
+              <input type="time" id="evening-start" required>
+              <span>to</span>
+              <input type="time" id="evening-end" required>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-hours" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add News Modal -->
+    <div id="news-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h3>Add New Announcement</h3>
+        <form id="news-form">
+          <div class="form-group">
+            <label for="news-title">Title</label>
+            <input type="text" id="news-title" required>
+          </div>
+          <div class="form-group">
+            <label for="news-content">Content</label>
+            <textarea id="news-content" required></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-news" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Change Photo Modal -->
+    <div id="photo-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h3>Change Photo</h3>
+        <form id="photo-form">
+          <div class="form-group">
+            <label for="photo-input">Select New Photo</label>
+            <input type="file" id="photo-input" accept="image/*" required>
+            <div id="photo-preview" style="margin-top: 10px; max-width: 300px; display: none;">
+              <img id="preview-img" style="width: 100%; border-radius: 4px;">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-photo" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <style>
+      .news-content {
+        margin-top: 20px;
+      }
+      
+      .news-item {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+        margin-bottom: 15px;
+        position: relative;
+      }
+      
+      .news-date {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        display: block;
+        margin-bottom: 5px;
+      }
+      
+      .news-item h4 {
+        color: var(--primary);
+        margin: 0 0 10px 0;
+      }
+      
+      .news-item p {
+        margin: 0;
+        color: var(--text-light);
+      }
+      
+      .delete-news-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: #999;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 5px;
+        transition: color 0.3s ease;
+      }
+      
+      .delete-news-btn:hover {
+        color: #ff0000;
+      }
+
+      .hours-form-group {
+        margin-bottom: 20px;
+      }
+      
+      .hours-form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: var(--primary);
+      }
+      
+      .time-inputs {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .time-inputs input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      
+      .time-inputs span {
+        color: var(--text-light);
+      }
+
+      .change-photo-btn {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+      }
+      .change-photo-btn:hover {
+        background-color: var(--primary-dark);
+      }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check admin status
+      const userRole = localStorage.getItem('userRole');
+      if (userRole === 'admin') {
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+      }
+
+      // Load saved games
+      function loadGames() {
+        const savedGames = JSON.parse(localStorage.getItem('psGames')) || [];
+        const gameGallery = document.querySelector('.ps-lounge-gallery');
+        
+        if (savedGames.length > 0) {
+          gameGallery.innerHTML = ''; // Clear default games
+          savedGames.forEach(game => {
+            const gameCard = createGameCard(game);
+            gameGallery.appendChild(gameCard);
+          });
+        }
+      }
+
+      // Create game card
+      function createGameCard(game) {
+        const card = document.createElement('div');
+        card.className = 'ps-lounge-item';
+        card.setAttribute('data-id', game.id);
+        
+        const imageHtml = game.image ? 
+          `<img src="${game.image}" alt="${game.title}" class="ps-lounge-image" style="width: 100%; height: 200px; object-fit: cover;">` :
+          `<div class="ps-placeholder-image" style="background-color: ${game.color}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; height: 200px;">
+            ${game.title}
+          </div>`;
+        
+        card.innerHTML = `
+          ${imageHtml}
+          <div class="ps-lounge-content">
+            <h3 class="ps-lounge-title">${game.title}</h3>
+            <p class="ps-lounge-description">${game.description}</p>
+            <button class="delete-game-btn admin-only" style="display: none;" title="Delete game">✕</button>
+            <button class="change-photo-btn admin-only" style="display: none;" title="Change photo">Change Photo</button>
+          </div>
+        `;
+
+        // Add delete button functionality
+        const deleteBtn = card.querySelector('.delete-game-btn');
+        if (deleteBtn) {
+          if (userRole === 'admin') {
+            deleteBtn.style.display = '';
+          }
+          deleteBtn.addEventListener('click', function() {
+            card.remove();
+            saveGames();
+          });
+        }
+
+        // Add change photo button functionality
+        const changePhotoBtn = card.querySelector('.change-photo-btn');
+        if (changePhotoBtn) {
+          if (userRole === 'admin') {
+            changePhotoBtn.style.display = '';
+          }
+          changePhotoBtn.addEventListener('click', function() {
+            currentPhotoTarget = card;
+            photoModal.style.display = 'flex';
+          });
+        }
+
+        return card;
+      }
+
+      // Save games to localStorage
+      function saveGames() {
+        const games = [];
+        document.querySelectorAll('.ps-lounge-item').forEach(card => {
+          const image = card.querySelector('.ps-lounge-image');
+          const placeholder = card.querySelector('.ps-placeholder-image');
+          games.push({
+            id: card.getAttribute('data-id'),
+            title: card.querySelector('.ps-lounge-title').textContent,
+            description: card.querySelector('.ps-lounge-description').textContent,
+            color: placeholder ? placeholder.style.backgroundColor : '#0066cc',
+            image: image ? image.src : null
+          });
+        });
+        localStorage.setItem('psGames', JSON.stringify(games));
+      }
+
+      // Load saved hours
+      function loadHours() {
+        const savedHours = JSON.parse(localStorage.getItem('psHours')) || {
+          morning: { start: '10:00', end: '13:00' },
+          afternoon: { start: '14:00', end: '18:00' },
+          evening: { start: '19:00', end: '23:00' }
+        };
+        
+        // Update the display
+        updateHoursDisplay(savedHours);
+        
+        // Set form values
+        document.getElementById('morning-start').value = savedHours.morning.start;
+        document.getElementById('morning-end').value = savedHours.morning.end;
+        document.getElementById('afternoon-start').value = savedHours.afternoon.start;
+        document.getElementById('afternoon-end').value = savedHours.afternoon.end;
+        document.getElementById('evening-start').value = savedHours.evening.start;
+        document.getElementById('evening-end').value = savedHours.evening.end;
+      }
+
+      // Update hours display
+      function updateHoursDisplay(hours) {
+        const hoursList = document.getElementById('hours-list');
+        hoursList.innerHTML = `
+          <li><span>Morning Session</span> <span>${hours.morning.start} - ${hours.morning.end}</span></li>
+          <li><span>Afternoon Session</span> <span>${hours.afternoon.start} - ${hours.afternoon.end}</span></li>
+          <li><span>Evening Session</span> <span>${hours.evening.start} - ${hours.evening.end}</span></li>
+          <li><span>Location</span> <span>Deck 8, Forward</span></li>
+        `;
+      }
+
+      // Load saved news
+      function loadNews() {
+        const savedNews = JSON.parse(localStorage.getItem('psNews')) || [];
+        const newsContent = document.getElementById('news-content');
+        
+        if (savedNews.length > 0) {
+          newsContent.innerHTML = ''; // Clear default news
+          savedNews.forEach(news => {
+            const newsItem = createNewsItem(news);
+            newsContent.appendChild(newsItem);
+          });
+        }
+      }
+
+      // Create news item
+      function createNewsItem(news) {
+        const item = document.createElement('div');
+        item.className = 'news-item';
+        item.setAttribute('data-id', news.id);
+        
+        item.innerHTML = `
+          <span class="news-date">${news.date}</span>
+          <h4>${news.title}</h4>
+          <p>${news.content}</p>
+          <button class="delete-news-btn admin-only" style="display: none;" title="Delete announcement">✕</button>
+        `;
+
+        // Add delete button functionality
+        const deleteBtn = item.querySelector('.delete-news-btn');
+        if (deleteBtn) {
+          if (userRole === 'admin') {
+            deleteBtn.style.display = '';
+          }
+          deleteBtn.addEventListener('click', function() {
+            item.remove();
+            saveNews();
+          });
+        }
+
+        return item;
+      }
+
+      // Save news to localStorage
+      function saveNews() {
+        const news = [];
+        document.querySelectorAll('.news-item').forEach(item => {
+          news.push({
+            id: item.getAttribute('data-id'),
+            date: item.querySelector('.news-date').textContent,
+            title: item.querySelector('h4').textContent,
+            content: item.querySelector('p').textContent
+          });
+        });
+        localStorage.setItem('psNews', JSON.stringify(news));
+      }
+
+      // Load saved data
+      loadGames();
+      loadHours();
+      loadNews();
+
+      // Add Game Modal
+      const addGameBtn = document.getElementById('add-game');
+      const gameModal = document.getElementById('game-modal');
+      const cancelGameBtn = document.getElementById('cancel-game');
+      const gameForm = document.getElementById('game-form');
+
+      if (addGameBtn) {
+        addGameBtn.addEventListener('click', () => {
+          gameModal.style.display = 'flex';
+        });
+      }
+
+      if (cancelGameBtn) {
+        cancelGameBtn.addEventListener('click', () => {
+          gameModal.style.display = 'none';
+          gameForm.reset();
+        });
+      }
+
+      if (gameForm) {
+        gameForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const newGame = {
+            id: `game-${Date.now()}`,
+            title: document.getElementById('game-title').value,
+            description: document.getElementById('game-description').value,
+            color: document.getElementById('game-color').value
+          };
+          
+          const gameGallery = document.querySelector('.ps-lounge-gallery');
+          const gameCard = createGameCard(newGame);
+          gameGallery.appendChild(gameCard);
+          saveGames();
+          
+          gameForm.reset();
+          gameModal.style.display = 'none';
+        });
+      }
+
+      // Edit Hours Modal
+      const editHoursBtn = document.getElementById('edit-hours');
+      const hoursModal = document.getElementById('hours-modal');
+      const cancelHoursBtn = document.getElementById('cancel-hours');
+      const hoursForm = document.getElementById('hours-form');
+
+      if (editHoursBtn) {
+        editHoursBtn.addEventListener('click', () => {
+          hoursModal.style.display = 'flex';
+        });
+      }
+
+      if (cancelHoursBtn) {
+        cancelHoursBtn.addEventListener('click', () => {
+          hoursModal.style.display = 'none';
+        });
+      }
+
+      if (hoursForm) {
+        hoursForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const hours = {
+            morning: {
+              start: document.getElementById('morning-start').value,
+              end: document.getElementById('morning-end').value
+            },
+            afternoon: {
+              start: document.getElementById('afternoon-start').value,
+              end: document.getElementById('afternoon-end').value
+            },
+            evening: {
+              start: document.getElementById('evening-start').value,
+              end: document.getElementById('evening-end').value
+            }
+          };
+          
+          localStorage.setItem('psHours', JSON.stringify(hours));
+          updateHoursDisplay(hours);
+          hoursModal.style.display = 'none';
+        });
+      }
+
+      // Add News Modal
+      const addNewsBtn = document.getElementById('add-news');
+      const newsModal = document.getElementById('news-modal');
+      const cancelNewsBtn = document.getElementById('cancel-news');
+      const newsForm = document.getElementById('news-form');
+
+      if (addNewsBtn) {
+        addNewsBtn.addEventListener('click', () => {
+          newsModal.style.display = 'flex';
+        });
+      }
+
+      if (cancelNewsBtn) {
+        cancelNewsBtn.addEventListener('click', () => {
+          newsModal.style.display = 'none';
+          newsForm.reset();
+        });
+      }
+
+      if (newsForm) {
+        newsForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const newNews = {
+            id: `news-${Date.now()}`,
+            date: new Date().toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            }),
+            title: document.getElementById('news-title').value,
+            content: document.getElementById('news-content').value
+          };
+          
+          const newsContent = document.getElementById('news-content');
+          const newsItem = createNewsItem(newNews);
+          newsContent.appendChild(newsItem);
+          saveNews();
+          
+          newsForm.reset();
+          newsModal.style.display = 'none';
+        });
+      }
+
+      // Change Photo Modal
+      const changePhotoBtns = document.querySelectorAll('.change-photo-btn');
+      const photoModal = document.getElementById('photo-modal');
+      const cancelPhotoBtn = document.getElementById('cancel-photo');
+      const photoForm = document.getElementById('photo-form');
+      const photoInput = document.getElementById('photo-input');
+      const photoPreview = document.getElementById('photo-preview');
+      const previewImg = document.getElementById('preview-img');
+      let currentPhotoTarget = null;
+
+      // Image preview functionality
+      if (photoInput) {
+        photoInput.addEventListener('change', function() {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              previewImg.src = e.target.result;
+              photoPreview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+          } else {
+            photoPreview.style.display = 'none';
+          }
+        });
+      }
+
+      // Add click handlers to all change photo buttons
+      changePhotoBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          currentPhotoTarget = this.closest('.ps-lounge-item');
+          photoModal.style.display = 'flex';
+        });
+      });
+
+      if (cancelPhotoBtn) {
+        cancelPhotoBtn.addEventListener('click', () => {
+          photoModal.style.display = 'none';
+          photoForm.reset();
+          photoPreview.style.display = 'none';
+        });
+      }
+
+      if (photoForm) {
+        photoForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const file = photoInput.files[0];
+          if (file && currentPhotoTarget) {
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+              if (currentPhotoTarget === mainGamingImage) {
+                mainGamingImage.src = ev.target.result;
+                localStorage.setItem('mainGamingImage', ev.target.result);
+              } else {
+                // Featured games logic
+                const placeholder = currentPhotoTarget.querySelector('.ps-placeholder-image');
+                if (placeholder) {
+                  const img = document.createElement('img');
+                  img.src = ev.target.result;
+                  img.alt = currentPhotoTarget.querySelector('.ps-lounge-title').textContent;
+                  img.className = 'ps-lounge-image';
+                  img.style.width = '100%';
+                  img.style.height = '200px';
+                  img.style.objectFit = 'cover';
+                  placeholder.replaceWith(img);
+                } else {
+                  // Update existing image
+                  const existingImg = currentPhotoTarget.querySelector('.ps-lounge-image');
+                  if (existingImg) {
+                    existingImg.src = ev.target.result;
+                  }
+                }
+                saveGames();
+              }
+            };
+            reader.readAsDataURL(file);
+          }
+          photoModal.style.display = 'none';
+          photoForm.reset();
+          photoPreview.style.display = 'none';
+        });
+      }
+
+      // Main Gaming Area Photo Change
+      const mainPhotoBtn = document.getElementById('change-main-photo');
+      const mainGamingImage = document.getElementById('main-gaming-image');
+      // Load saved main area image
+      const savedMainImage = localStorage.getItem('mainGamingImage');
+      if (savedMainImage) {
+        mainGamingImage.src = savedMainImage;
+      }
+      if (mainPhotoBtn) {
+        mainPhotoBtn.addEventListener('click', function() {
+          currentPhotoTarget = mainGamingImage;
+          photoModal.style.display = 'flex';
+        });
+      }
+    });
+    </script>
+  </body>
+</html> 

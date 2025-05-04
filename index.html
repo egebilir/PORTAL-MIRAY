@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Miray Portal</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <!-- Language flags styling is now handled by flag-icons.js -->
+     
+    <style>
+      /* Admin login styling */
+      .login-toggle {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 8px 14px;
+        background-color: rgba(0, 0, 0, 0.3);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        opacity: 0.9;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1001; /* Ensure it's above language selector */
+      }
+      
+      .login-toggle:hover {
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.5);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      
+      /* Language selector positioned in the blue header area as shown in screenshot */
+      .language-selector {
+        position: absolute;
+        top: 20px;
+        right: 20px; 
+        display: flex;
+        gap: 8px;
+        z-index: 1000;
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 6px 10px;
+        border-radius: 30px;
+      }
+      
+      /* Remove red "Language" text that shows in screenshot */
+      .language-label {
+        display: none;
+      }
+      
+      /* Basic button styling for language buttons */
+      .lang-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        background-color: transparent;
+      }
+      
+      .lang-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        border-color: white;
+      }
+      
+      .lang-btn.active {
+        transform: scale(1.1);
+        border: 3px solid white !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+      }
+      
+      /* Flag backgrounds now handled by flag-icons.js */
+      
+      /* Hide admin elements by default */
+      .admin-only {
+        display: none;
+      }
+      
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      
+      /* Delete event button styling */
+      .delete-event-btn {
+        background: none;
+        border: none;
+        color: #ff4757;
+        margin-left: 10px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      
+      .delete-event-btn:hover {
+        color: #ff0022;
+      }
+      
+      .flag-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      header {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: var(--white);
+        padding: 40px 0;
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+      }
+
+      /* Add survey button styling to the existing style section */
+      .survey-btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 24px;
+        background-color: var(--white);
+        color: var(--primary);
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .survey-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <button id="login-toggle" class="login-toggle" data-lang="adminLogin">Admin Login</button>
+        <div class="header-content">
+          <img src="img/logo.png" alt="Miray Cruises" class="logo" />
+          <h1 data-lang="welcomeTitle">WELCOME TO PORTAL MIRAY</h1>
+          <p data-lang="welcomeSubtitle">Your onboard digital guide</p>
+          <a href="customer-survey.html" id="survey-btn" class="survey-btn" data-lang="surveyButton">Customer Survey</a>
+        </div>
+        <div class="language-selector">
+          <button class="lang-btn" data-language="en">
+            <img src="img/flags/en.png" alt="EN" class="flag-img">
+          </button>
+          <button class="lang-btn" data-language="es">
+            <img src="img/flags/es.png" alt="ES" class="flag-img">
+          </button>
+          <button class="lang-btn" data-language="tr">
+            <img src="img/flags/tr.png" alt="TR" class="flag-img">
+          </button>
+          <button class="lang-btn" data-language="de">
+            <img src="img/flags/de.png" alt="DE" class="flag-img">
+          </button>
+        </div>
+      </header>
+
+      <!-- News & Announcements Section -->
+      <div class="news-container">
+        <div class="news-header">
+          <h3 data-lang="news-title">News & Announcements</h3>
+          <div class="news-controls">
+            <button id="add-news" class="add-news admin-only" title="Add announcement">+</button>
+            <button id="close-news" class="close-news">×</button>
+          </div>
+        </div>
+        <div class="news-content" id="news-content">
+          <div class="news-item" data-id="news-1">
+            <span class="news-date">April 26, 2025</span>
+            <h4 data-lang="news-item-1-title">Welcome Aboard!</h4>
+            <p data-lang="news-item-1-content">Welcome to the Miray Cruises digital portal. We're excited to have you onboard!</p>
+            <button class="delete-news-btn admin-only" title="Delete announcement">✕</button>
+          </div>
+          <div class="news-item" data-id="news-2">
+            <span class="news-date">April 26, 2025</span>
+            <h4 data-lang="news-item-2-title">Evening Entertainment</h4>
+            <p data-lang="news-item-2-content">Tonight's show "Mediterranean Nights" starts at 8:00 PM in the Grand Ballroom.</p>
+            <button class="delete-news-btn admin-only" title="Delete announcement">✕</button>
+          </div>
+          <div class="news-item" data-id="news-3">
+            <span class="news-date">April 25, 2025</span>
+            <h4 data-lang="news-item-3-title">Shore Excursion Update</h4>
+            <p data-lang="news-item-3-content">Tomorrow's "Island Discovery" tour will depart at 9:30 AM instead of 10:00 AM. Please be at the meeting point by 9:15 AM.</p>
+            <button class="delete-news-btn admin-only" title="Delete announcement">✕</button>
+          </div>
+        </div>
+        <div class="news-footer">
+          <button id="view-all-news" class="btn btn-secondary btn-sm" data-lang="news-view-all">View All</button>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+          <span class="menu-icon"></span>
+          <span class="menu-icon"></span>
+          <span class="menu-icon"></span>
+        </button>
+        <ul id="nav-menu">
+          <li><a href="#daily-program" data-lang="menuDailyProgram">Daily Program</a></li>
+          <li><a href="room-service.html" target="_blank" data-lang="menuRoomService">Room Service</a></li>
+          <li><a href="bar-menu.html" target="_blank" data-lang="menuBarMenu">Bar Menu</a></li>
+          <li><a href="shore-excursions.html" target="_blank" data-lang="menuShoreExcursions">Shore Excursions</a></li>
+          <li><a href="game-center.html" target="_blank" data-lang="menuPlayStationLounge">PlayStation Lounge</a></li>
+          <li><a href="#ship-location" data-lang="menuShipLocation">Ship's Location</a></li>
+          <li><a href="http://172.10.3.1" id="connect-internet" data-lang="menuConnectInternet">Connect to Internet</a></li>
+        </ul>
+      </nav>
+
+      <main>
+        <section id="daily-program" class="content-section">
+          <div class="section-header">
+            <h2 data-lang="todaysProgramTitle">Today's Program</h2>
+            <div class="section-icon">📅</div>
+          </div>
+          <div class="upload-container admin-only">
+            <input
+              type="file"
+              id="program-upload"
+              accept=".pdf,.jpg,.jpeg,.png"
+            />
+            <button id="upload-btn" class="btn btn-primary">
+              Upload Program
+            </button>
+          </div>
+          <!-- Replace the existing program-display div with: -->
+          <div id="program-display" class="program-display">
+            <div class="calendar-container">
+              <div class="calendar-header">
+                <button id="prev-month" class="calendar-nav">◀ Previous</button>
+                <h3 id="current-month">April 2025</h3>
+                <button id="next-month" class="calendar-nav">Next ▶</button>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-weekdays">
+                  <div>Sun</div>
+                  <div>Mon</div>
+                  <div>Tue</div>
+                  <div>Wed</div>
+                  <div>Thu</div>
+                  <div>Fri</div>
+                  <div>Sat</div>
+                </div>
+                <div id="calendar-days" class="calendar-days"></div>
+              </div>
+              <div class="calendar-events" id="calendar-events">
+                <h4>Today's Activities</h4>
+                <ul id="events-list">
+                  <li class="empty-state">No activities scheduled yet</li>
+                </ul>
+              </div>
+            </div>
+            <div class="calendar-actions">
+              <button id="add-event" class="btn btn-primary admin-only">
+                + Add Activity
+              </button>
+            </div>
+          </div>
+          <div class="quick-links">
+            <h3 data-lang="quickAccessTitle">Quick Access:</h3>
+            <div class="quick-link-buttons">
+              <a
+                href="room-service.html"
+                target="_blank"
+                class="btn btn-secondary"
+              >
+                <span class="btn-icon">🍽️</span> <span data-lang="quickRoomService">Room Service</span>
+              </a>
+              <a href="bar-menu.html" target="_blank" class="btn btn-secondary">
+                <span class="btn-icon">🍸</span> <span data-lang="quickBarMenu">Bar Menu</span>
+              </a>
+              <a href="shore-excursions.html" target="_blank" class="btn btn-secondary">
+                <span class="btn-icon">🏝️</span> <span data-lang="quickShoreExcursions">Shore Excursions</span>
+              </a>
+              <a href="game-center.html" target="_blank" class="btn btn-secondary">
+                <span class="btn-icon">🎮</span> <span data-lang="quickPlayStationLounge">PlayStation Lounge</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="ship-location" class="content-section">
+          <div class="section-header">
+            <h2 data-lang="shipLocationTitle">Ship's Current Location</h2>
+            <div class="section-icon">📍</div>
+          </div>
+          <div class="location-container">
+            <div class="map-placeholder">
+              <!-- Dynamic content will be inserted here -->
+              <div class="loading">Loading GPS data...</div>
+            </div>
+            <div class="location-info">
+              <h3 data-lang="currentPositionTitle">Current Position</h3>
+              <p id="location-description">Acquiring GPS signal...</p>
+              <div class="coordinates">
+                <div class="coord">
+                  <span data-lang="latitude">Latitude:</span>
+                  <span id="latitude">--</span>
+                </div>
+                <div class="coord">
+                  <span data-lang="longitude">Longitude:</span>
+                  <span id="longitude">--</span>
+                </div>
+              </div>
+              <div class="weather">
+                <span id="weather-icon">⛅</span>
+                <span id="weather-temp">--°C</span>
+                <div class="weather-details">
+                  <div class="weather-item"><span data-lang="humidity">Humidity:</span> <span id="weather-humidity">--%</span></div>
+                  <div class="weather-item"><span data-lang="wind">Wind:</span> <span id="weather-wind">-- km/h</span></div>
+                </div>
+              </div>
+              <div class="timestamp">
+                <span data-lang="lastUpdated">Last updated:</span> <span id="update-time">--</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p data-lang="copyright">© 2025 Miray Cruises. All rights reserved.</p>
+        <p class="wifi-notice" data-lang="wifiNotice">Connected to Miray Guest WiFi</p>
+      </footer>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="language.js"></script>
+    <script src="flag-icons.js"></script>
+    <script src="main.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    <script src="language-debug.js"></script>
+    
+    <!-- Add News Modal -->
+    <div id="news-modal" class="modal">
+      <div class="modal-content">
+        <h3 data-lang="add-news-title">Add Announcement</h3>
+        <form id="news-form">
+          <div class="form-group">
+            <label for="news-title" data-lang="add-news-form-title">Title</label>
+            <input type="text" id="news-title" required>
+          </div>
+          <div class="form-group">
+            <label for="news-content" data-lang="add-news-form-content">Content</label>
+            <textarea id="news-content" rows="4" required></textarea>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="cancel-news-btn" class="btn btn-secondary" data-lang="cancel">Cancel</button>
+            <button type="submit" class="btn btn-primary" data-lang="save">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

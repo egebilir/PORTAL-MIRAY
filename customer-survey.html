@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Survey - Miray Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .survey-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .survey-form {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .question-group {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-group:last-child {
+            border-bottom: none;
+        }
+
+        .question {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .rating-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .rating-option input[type="radio"] {
+            display: none;
+        }
+
+        .rating-option label {
+            display: block;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rating-option input[type="radio"]:checked + label {
+            background: var(--primary);
+            color: white;
+        }
+
+        .yes-no-group {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .yes-no-option {
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .subcategory-group {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .subcategory-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .subcategory-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .subcategory-label {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .subcategory-rating {
+            display: flex;
+            gap: 10px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateX(-5px);
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .thank-you {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .thank-you h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .emoji {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .text-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="img/logo.png" alt="Miray Cruises" class="logo">
+                <h1 data-lang="survey-title">CUSTOMER SURVEY</h1>
+                <p data-lang="survey-subtitle">Help us improve your experience</p>
+            </div>
+        </header>
+
+        <a href="index.html" class="back-btn">← <span data-lang="back-to-portal">Back to Portal</span></a>
+
+        <main class="survey-container">
+            <div class="survey-form" id="surveyForm">
+                <!-- Personal Information -->
+                <div class="question-group">
+                    <div class="form-field">
+                        <label for="fullName" class="question" data-lang="personal-name">Name and Surname</label>
+                        <input type="text" id="fullName" name="fullName" class="text-input" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="cabinNumber" class="question" data-lang="personal-cabin">Cabin Number</label>
+                        <input type="text" id="cabinNumber" name="cabinNumber" class="text-input" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="email" class="question" data-lang="personal-email">E-mail</label>
+                        <input type="email" id="email" name="email" class="text-input" required>
+                    </div>
+                </div>
+
+                <!-- First Cruise Experience -->
+                <div class="question-group">
+                    <div class="question" data-lang="first-cruise">Is it your first Cruise Experience?</div>
+                    <div class="yes-no-group">
+                        <div class="yes-no-option">
+                            <input type="radio" name="first-cruise" id="first-cruise-yes" value="yes">
+                            <label for="first-cruise-yes" data-lang="yes">Yes</label>
+                        </div>
+                        <div class="yes-no-option">
+                            <input type="radio" name="first-cruise" id="first-cruise-no" value="no">
+                            <label for="first-cruise-no" data-lang="no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rating Questions 2-11 -->
+                <div class="question-group">
+                    <div class="question" data-lang="booking-satisfaction">Are you satisfied with the agency that you made booking?</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="booking" id="booking1" value="1">
+                            <label for="booking1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="booking" id="booking2" value="2">
+                            <label for="booking2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="booking" id="booking3" value="3">
+                            <label for="booking3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="booking" id="booking4" value="4">
+                            <label for="booking4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <div class="question" data-lang="checkin-service">Services given during the Check-in and Check-out?</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="checkin" id="checkin1" value="1">
+                            <label for="checkin1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="checkin" id="checkin2" value="2">
+                            <label for="checkin2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="checkin" id="checkin3" value="3">
+                            <label for="checkin3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="checkin" id="checkin4" value="4">
+                            <label for="checkin4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <div class="question" data-lang="cabin-cleanliness">Tidyness and cleanliness of your cabin</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="cabin" id="cabin1" value="1">
+                            <label for="cabin1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="cabin" id="cabin2" value="2">
+                            <label for="cabin2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="cabin" id="cabin3" value="3">
+                            <label for="cabin3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="cabin" id="cabin4" value="4">
+                            <label for="cabin4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <div class="question" data-lang="public-areas">Cleanliness of public areas</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="public" id="public1" value="1">
+                            <label for="public1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="public" id="public2" value="2">
+                            <label for="public2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="public" id="public3" value="3">
+                            <label for="public3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="public" id="public4" value="4">
+                            <label for="public4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <div class="question" data-lang="fb-quality">Quality of Food and Beverage services</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="fb" id="fb1" value="1">
+                            <label for="fb1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="fb" id="fb2" value="2">
+                            <label for="fb2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="fb" id="fb3" value="3">
+                            <label for="fb3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="fb" id="fb4" value="4">
+                            <label for="fb4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <div class="question" data-lang="buffet-quality">Quality of open buffet meals</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="buffet" id="buffet1" value="1">
+                            <label for="buffet1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="buffet" id="buffet2" value="2">
+                            <label for="buffet2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="buffet" id="buffet3" value="3">
+                            <label for="buffet3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="buffet" id="buffet4" value="4">
+                            <label for="buffet4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <div class="question" data-lang="general-service">General service</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="general" id="general1" value="1">
+                            <label for="general1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="general" id="general2" value="2">
+                            <label for="general2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="general" id="general3" value="3">
+                            <label for="general3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="general" id="general4" value="4">
+                            <label for="general4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <div class="question" data-lang="shore-excursions">Shore Excursions</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="excursions" id="excursions1" value="1">
+                            <label for="excursions1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="excursions" id="excursions2" value="2">
+                            <label for="excursions2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="excursions" id="excursions3" value="3">
+                            <label for="excursions3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="excursions" id="excursions4" value="4">
+                            <label for="excursions4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <div class="question" data-lang="price-performance">Price/Performance</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="price" id="price1" value="1">
+                            <label for="price1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="price" id="price2" value="2">
+                            <label for="price2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="price" id="price3" value="3">
+                            <label for="price3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="price" id="price4" value="4">
+                            <label for="price4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <div class="question" data-lang="recommend-travel">Would you recommend your travel?</div>
+                    <div class="rating-group">
+                        <div class="rating-option">
+                            <input type="radio" name="recommend" id="recommend1" value="1">
+                            <label for="recommend1">1<br><span data-lang="rating-1">Poor</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="recommend" id="recommend2" value="2">
+                            <label for="recommend2">2<br><span data-lang="rating-2">Fair</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="recommend" id="recommend3" value="3">
+                            <label for="recommend3">3<br><span data-lang="rating-3">Good</span></label>
+                        </div>
+                        <div class="rating-option">
+                            <input type="radio" name="recommend" id="recommend4" value="4">
+                            <label for="recommend4">4<br><span data-lang="rating-4">Excellent</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activities Section -->
+                <div class="question-group">
+                    <div class="question" data-lang="activities-title">How do you rate in-ship activities and sections</div>
+                    <div class="subcategory-group">
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="activity-bars">Bars</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="bars" id="bars1" value="1">
+                                    <label for="bars1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="bars" id="bars2" value="2">
+                                    <label for="bars2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="bars" id="bars3" value="3">
+                                    <label for="bars3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="bars" id="bars4" value="4">
+                                    <label for="bars4">4</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="activity-restaurant">Restaurant</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="restaurant" id="restaurant1" value="1">
+                                    <label for="restaurant1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="restaurant" id="restaurant2" value="2">
+                                    <label for="restaurant2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="restaurant" id="restaurant3" value="3">
+                                    <label for="restaurant3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="restaurant" id="restaurant4" value="4">
+                                    <label for="restaurant4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="activity-entertainment">Entertainment</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="entertainment" id="entertainment1" value="1">
+                                    <label for="entertainment1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="entertainment" id="entertainment2" value="2">
+                                    <label for="entertainment2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="entertainment" id="entertainment3" value="3">
+                                    <label for="entertainment3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="entertainment" id="entertainment4" value="4">
+                                    <label for="entertainment4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="activity-shows">Shows</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="shows" id="shows1" value="1">
+                                    <label for="shows1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="shows" id="shows2" value="2">
+                                    <label for="shows2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="shows" id="shows3" value="3">
+                                    <label for="shows3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="shows" id="shows4" value="4">
+                                    <label for="shows4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="activity-music">Live Music</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="music" id="music1" value="1">
+                                    <label for="music1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="music" id="music2" value="2">
+                                    <label for="music2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="music" id="music3" value="3">
+                                    <label for="music3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="music" id="music4" value="4">
+                                    <label for="music4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="activity-kids">Kids Club</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="kids" id="kids1" value="1">
+                                    <label for="kids1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="kids" id="kids2" value="2">
+                                    <label for="kids2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="kids" id="kids3" value="3">
+                                    <label for="kids3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="kids" id="kids4" value="4">
+                                    <label for="kids4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="activity-casino">Casino</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="casino" id="casino1" value="1">
+                                    <label for="casino1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="casino" id="casino2" value="2">
+                                    <label for="casino2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="casino" id="casino3" value="3">
+                                    <label for="casino3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="casino" id="casino4" value="4">
+                                    <label for="casino4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="activity-spa">Spa</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="spa" id="spa1" value="1">
+                                    <label for="spa1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="spa" id="spa2" value="2">
+                                    <label for="spa2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="spa" id="spa3" value="3">
+                                    <label for="spa3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="spa" id="spa4" value="4">
+                                    <label for="spa4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="activity-internet">Internet</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="internet" id="internet1" value="1">
+                                    <label for="internet1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="internet" id="internet2" value="2">
+                                    <label for="internet2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="internet" id="internet3" value="3">
+                                    <label for="internet3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="internet" id="internet4" value="4">
+                                    <label for="internet4">4</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crew Service Section -->
+                <div class="question-group">
+                    <div class="question" data-lang="crew-service-title">How do you rate crew service quality?</div>
+                    <div class="subcategory-group">
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="crew-port">Port Services</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="port" id="port1" value="1">
+                                    <label for="port1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="port" id="port2" value="2">
+                                    <label for="port2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="port" id="port3" value="3">
+                                    <label for="port3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="port" id="port4" value="4">
+                                    <label for="port4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="crew-reception">Reception</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="reception" id="reception1" value="1">
+                                    <label for="reception1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="reception" id="reception2" value="2">
+                                    <label for="reception2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="reception" id="reception3" value="3">
+                                    <label for="reception3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="reception" id="reception4" value="4">
+                                    <label for="reception4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="crew-guide">Guide Team</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="guide" id="guide1" value="1">
+                                    <label for="guide1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="guide" id="guide2" value="2">
+                                    <label for="guide2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="guide" id="guide3" value="3">
+                                    <label for="guide3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="guide" id="guide4" value="4">
+                                    <label for="guide4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="crew-dutyfree">Duty Free Team</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="dutyfree" id="dutyfree1" value="1">
+                                    <label for="dutyfree1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="dutyfree" id="dutyfree2" value="2">
+                                    <label for="dutyfree2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="dutyfree" id="dutyfree3" value="3">
+                                    <label for="dutyfree3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="dutyfree" id="dutyfree4" value="4">
+                                    <label for="dutyfree4">4</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="subcategory-item">
+                            <div class="subcategory-label" data-lang="crew-housekeeping">Housekeeping Team</div>
+                            <div class="subcategory-rating">
+                                <div class="rating-option">
+                                    <input type="radio" name="housekeeping" id="housekeeping1" value="1">
+                                    <label for="housekeeping1">1</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="housekeeping" id="housekeeping2" value="2">
+                                    <label for="housekeeping2">2</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="housekeeping" id="housekeeping3" value="3">
+                                    <label for="housekeeping3">3</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" name="housekeeping" id="housekeeping4" value="4">
+                                    <label for="housekeeping4">4</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" onclick="submitSurvey()" data-lang="submit-survey">Submit Survey</button>
+            </div>
+
+            <div class="thank-you" id="thankYou">
+                <div class="emoji">🙏</div>
+                <h2 data-lang="thank-you-title">Thank You for Your Feedback!</h2>
+                <p data-lang="thank-you-message">Your response has been recorded. We appreciate your time and will use your feedback to improve our services.</p>
+            </div>
+        </main>
+
+        <footer>
+            <p data-lang="copyright">© 2025 Miray Cruises. All rights reserved.</p>
+            <p class="wifi-notice" data-lang="wifiNotice">Connected to Miray Guest WiFi</p>
+        </footer>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="language.js"></script>
+    <script>
+        function submitSurvey() {
+            // Get form values
+            const formData = {
+                // Personal Information
+                fullName: document.getElementById('fullName').value,
+                cabinNumber: document.getElementById('cabinNumber').value,
+                email: document.getElementById('email').value,
+
+                // Existing form fields
+                firstCruise: document.querySelector('input[name="first-cruise"]:checked')?.value,
+                booking: document.querySelector('input[name="booking"]:checked')?.value,
+                checkin: document.querySelector('input[name="checkin"]:checked')?.value,
+                cabin: document.querySelector('input[name="cabin"]:checked')?.value,
+                public: document.querySelector('input[name="public"]:checked')?.value,
+                fb: document.querySelector('input[name="fb"]:checked')?.value,
+                buffet: document.querySelector('input[name="buffet"]:checked')?.value,
+                general: document.querySelector('input[name="general"]:checked')?.value,
+                excursions: document.querySelector('input[name="excursions"]:checked')?.value,
+                price: document.querySelector('input[name="price"]:checked')?.value,
+                recommend: document.querySelector('input[name="recommend"]:checked')?.value,
+                
+                // Activities
+                bars: document.querySelector('input[name="bars"]:checked')?.value,
+                restaurant: document.querySelector('input[name="restaurant"]:checked')?.value,
+                entertainment: document.querySelector('input[name="entertainment"]:checked')?.value,
+                shows: document.querySelector('input[name="shows"]:checked')?.value,
+                music: document.querySelector('input[name="music"]:checked')?.value,
+                kids: document.querySelector('input[name="kids"]:checked')?.value,
+                casino: document.querySelector('input[name="casino"]:checked')?.value,
+                spa: document.querySelector('input[name="spa"]:checked')?.value,
+                internet: document.querySelector('input[name="internet"]:checked')?.value,
+                
+                // Crew Services
+                port: document.querySelector('input[name="port"]:checked')?.value,
+                reception: document.querySelector('input[name="reception"]:checked')?.value,
+                guide: document.querySelector('input[name="guide"]:checked')?.value,
+                dutyfree: document.querySelector('input[name="dutyfree"]:checked')?.value,
+                housekeeping: document.querySelector('input[name="housekeeping"]:checked')?.value
+            };
+
+            // Check if all required fields are filled
+            const requiredFields = [
+                'fullName', 'cabinNumber', 'email',
+                'firstCruise', 'booking', 'checkin', 'cabin', 'public', 
+                'fb', 'buffet', 'general', 'excursions', 'price', 'recommend'
+            ];
+            
+            const missingFields = requiredFields.filter(field => !formData[field]);
+            
+            if (missingFields.length > 0) {
+                const message = getCurrentLanguage() === 'en' ? 
+                    'Please complete all required fields.' :
+                    translations[getCurrentLanguage()]['validation-message'];
+                alert(message);
+                return;
+            }
+
+            // Send survey data to the API
+            fetch('/api/survey', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show thank you message
+                    document.getElementById('surveyForm').style.display = 'none';
+                    document.getElementById('thankYou').style.display = 'block';
+                } else {
+                    throw new Error('Failed to submit survey');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting the survey. Please try again.');
+            });
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentLang = localStorage.getItem('selectedLanguage') || 'en';
+            updatePageLanguage(currentLang);
+        });
+    </script>
+</body>
+</html> 

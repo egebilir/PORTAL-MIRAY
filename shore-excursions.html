@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shore Excursions - Miray Portal</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .excursion-card {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 20px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+      }
+      
+      .excursion-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .excursion-image {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+      }
+
+      .excursion-content {
+        padding: 20px;
+      }
+
+      .excursion-title {
+        font-size: 1.3rem;
+        color: var(--primary);
+        margin-bottom: 10px;
+      }
+
+      .excursion-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
+      }
+
+      .excursion-duration, .excursion-price {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .excursion-description {
+        margin-bottom: 15px;
+        color: var(--text-light);
+      }
+
+      .excursion-book {
+        text-align: right;
+      }
+
+      .excursion-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .excursion-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .news-content {
+        margin-top: 20px;
+      }
+      
+      .news-item {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+        margin-bottom: 15px;
+        position: relative;
+      }
+      
+      .news-date {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        display: block;
+        margin-bottom: 5px;
+      }
+      
+      .news-item h4 {
+        color: var(--primary);
+        margin: 0 0 10px 0;
+      }
+      
+      .news-item p {
+        margin: 0;
+        color: var(--text-light);
+      }
+      
+      .delete-news-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: #999;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 5px;
+        transition: color 0.3s ease;
+      }
+      
+      .delete-news-btn:hover {
+        color: #ff0000;
+      }
+
+      .hours-container {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+        margin-top: 20px;
+      }
+      
+      .hours-list {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .hours-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .hours-item:last-child {
+        border-bottom: none;
+      }
+      
+      .hours-item .day {
+        font-weight: 600;
+        color: var(--primary);
+      }
+      
+      .hours-item .time {
+        color: var(--text-light);
+      }
+      
+      .hours-form-group {
+        margin-bottom: 20px;
+      }
+      
+      .hours-form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: var(--primary);
+      }
+      
+      .time-inputs {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .time-inputs input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      
+      .time-inputs span {
+        color: var(--text-light);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-content">
+          <img src="img/logo.png" alt="Miray Cruises" class="logo" />
+          <h1>SHORE EXCURSIONS</h1>
+          <p>Explore our handpicked selection of experiences</p>
+        </div>
+      </header>
+
+      <a href="index.html" class="back-btn">← Back to Portal Home</a>
+
+      <main>
+        <section class="content-section">
+          <div class="section-header">
+            <h2>News & Announcements</h2>
+            <div class="section-icon">📢</div>
+            <button id="add-news" class="admin-only" style="display: none;">Add Announcement</button>
+          </div>
+          
+          <div class="news-content" id="news-content">
+            <div class="news-item" data-id="news-1">
+              <span class="news-date">April 26, 2025</span>
+              <h4>Welcome to Shore Excursions!</h4>
+              <p>Explore our handpicked selection of exciting shore excursions. Book early to secure your spot on these unforgettable adventures.</p>
+              <button class="delete-news-btn admin-only" style="display: none;" title="Delete announcement">✕</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-section">
+          <div class="section-header">
+            <h2>Available Excursions</h2>
+            <div class="section-icon">🏝️</div>
+            <button id="add-excursion" class="admin-only" style="display: none;">Add Excursion</button>
+          </div>
+          
+          <div class="excursion-grid">
+            <!-- Placeholder excursions - these would be dynamically loaded in a full implementation -->
+            <div class="excursion-card" data-id="excursion-1">
+              <img src="https://placehold.co/600x400?text=Island+Tour" alt="Island Tour" class="excursion-image">
+              <div class="excursion-content">
+                <h3 class="excursion-title">Island Highlights Tour</h3>
+                <p class="excursion-description">Experience the best sights and attractions of the island with our guided tour. Visit historic landmarks, beautiful beaches, and local markets.</p>
+                <div class="excursion-book">
+                  <button class="delete-excursion-btn admin-only" style="display: none;" title="Delete excursion">✕</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="excursion-card" data-id="excursion-2">
+              <img src="https://placehold.co/600x400?text=Snorkeling" alt="Snorkeling Adventure" class="excursion-image">
+              <div class="excursion-content">
+                <h3 class="excursion-title">Coral Reef Snorkeling</h3>
+                <p class="excursion-description">Discover the vibrant underwater world with our guided snorkeling tour. All equipment provided. Suitable for beginners and experienced snorkelers.</p>
+                <div class="excursion-book">
+                  <button class="delete-excursion-btn admin-only" style="display: none;" title="Delete excursion">✕</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="excursion-card" data-id="excursion-3">
+              <img src="https://placehold.co/600x400?text=Beach+Day" alt="Beach Day" class="excursion-image">
+              <div class="excursion-content">
+                <h3 class="excursion-title">VIP Beach Club Day</h3>
+                <p class="excursion-description">Enjoy a day of relaxation at an exclusive beach club with private cabanas, gourmet lunch, and unlimited drinks. Transportation included.</p>
+                <div class="excursion-book">
+                  <button class="delete-excursion-btn admin-only" style="display: none;" title="Delete excursion">✕</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert">
+            <p><strong>Note:</strong> All excursions require advance booking. Please contact Shore Excursion Staff on Deck 5 or dial 5801 from your cabin phone for booking assistance and availability.</p>
+          </div>
+        </section>
+
+        <section class="content-section">
+          <div class="section-header">
+            <h2>Shore Excursion Desk Hours</h2>
+            <div class="section-icon">⏰</div>
+            <button id="edit-hours" class="admin-only" style="display: none;">Edit Hours</button>
+          </div>
+          
+          <div class="hours-container">
+            <div class="hours-list" id="hours-list">
+              <div class="hours-item">
+                <span class="day">Monday - Friday</span>
+                <span class="time">8:00 AM - 8:00 PM</span>
+              </div>
+              <div class="hours-item">
+                <span class="day">Saturday</span>
+                <span class="time">9:00 AM - 6:00 PM</span>
+              </div>
+              <div class="hours-item">
+                <span class="day">Sunday</span>
+                <span class="time">9:00 AM - 5:00 PM</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>© 2025 Miray Cruises. All rights reserved.</p>
+        <p class="wifi-notice">Connected to Miray Guest WiFi</p>
+      </footer>
+    </div>
+
+    <!-- Add Excursion Modal -->
+    <div id="excursion-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h3>Add New Excursion</h3>
+        <form id="excursion-form">
+          <div class="form-group">
+            <label for="excursion-title">Title</label>
+            <input type="text" id="excursion-title" required>
+          </div>
+          <div class="form-group">
+            <label for="excursion-description">Description</label>
+            <textarea id="excursion-description" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="excursion-image">Image</label>
+            <input type="file" id="excursion-image" accept="image/*" required>
+            <div id="image-preview" style="margin-top: 10px; max-width: 300px; display: none;">
+              <img id="preview-img" style="width: 100%; border-radius: 4px;">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-excursion" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add News Modal -->
+    <div id="news-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h3>Add New Announcement</h3>
+        <form id="news-form">
+          <div class="form-group">
+            <label for="news-title">Title</label>
+            <input type="text" id="news-title" required>
+          </div>
+          <div class="form-group">
+            <label for="news-content">Content</label>
+            <textarea id="news-content" required></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-news" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Hours Modal -->
+    <div id="hours-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h3>Edit Working Hours</h3>
+        <form id="hours-form">
+          <div class="hours-form-group">
+            <label>Monday - Friday</label>
+            <div class="time-inputs">
+              <input type="time" id="weekday-start" required>
+              <span>to</span>
+              <input type="time" id="weekday-end" required>
+            </div>
+          </div>
+          <div class="hours-form-group">
+            <label>Saturday</label>
+            <div class="time-inputs">
+              <input type="time" id="saturday-start" required>
+              <span>to</span>
+              <input type="time" id="saturday-end" required>
+            </div>
+          </div>
+          <div class="hours-form-group">
+            <label>Sunday</label>
+            <div class="time-inputs">
+              <input type="time" id="sunday-start" required>
+              <span>to</span>
+              <input type="time" id="sunday-end" required>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-hours" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check admin status
+      const userRole = localStorage.getItem('userRole');
+      if (userRole === 'admin') {
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+      }
+
+      // Load saved excursions
+      function loadExcursions() {
+        const savedExcursions = JSON.parse(localStorage.getItem('excursions')) || [];
+        const excursionGrid = document.querySelector('.excursion-grid');
+        
+        if (savedExcursions.length > 0) {
+          excursionGrid.innerHTML = ''; // Clear default excursions
+          savedExcursions.forEach(excursion => {
+            const excursionCard = createExcursionCard(excursion);
+            excursionGrid.appendChild(excursionCard);
+          });
+        }
+      }
+
+      // Create excursion card
+      function createExcursionCard(excursion) {
+        const card = document.createElement('div');
+        card.className = 'excursion-card';
+        card.setAttribute('data-id', excursion.id);
+        
+        card.innerHTML = `
+          <img src="${excursion.image}" alt="${excursion.title}" class="excursion-image">
+          <div class="excursion-content">
+            <h3 class="excursion-title">${excursion.title}</h3>
+            <p class="excursion-description">${excursion.description}</p>
+            <div class="excursion-book">
+              <button class="delete-excursion-btn admin-only" style="display: none;" title="Delete excursion">✕</button>
+            </div>
+          </div>
+        `;
+
+        // Add delete button functionality
+        const deleteBtn = card.querySelector('.delete-excursion-btn');
+        if (deleteBtn) {
+          if (userRole === 'admin') {
+            deleteBtn.style.display = '';
+          }
+          deleteBtn.addEventListener('click', function() {
+            card.remove();
+            saveExcursions();
+          });
+        }
+
+        return card;
+      }
+
+      // Save excursions to localStorage
+      function saveExcursions() {
+        const excursions = [];
+        document.querySelectorAll('.excursion-card').forEach(card => {
+          excursions.push({
+            id: card.getAttribute('data-id'),
+            title: card.querySelector('.excursion-title').textContent,
+            description: card.querySelector('.excursion-description').textContent,
+            image: card.querySelector('.excursion-image').src
+          });
+        });
+        localStorage.setItem('excursions', JSON.stringify(excursions));
+      }
+
+      // Load saved news
+      function loadNews() {
+        const savedNews = JSON.parse(localStorage.getItem('news')) || [];
+        const newsContent = document.getElementById('news-content');
+        
+        if (savedNews.length > 0) {
+          newsContent.innerHTML = ''; // Clear default news
+          savedNews.forEach(news => {
+            const newsItem = createNewsItem(news);
+            newsContent.appendChild(newsItem);
+          });
+        }
+      }
+
+      // Create news item
+      function createNewsItem(news) {
+        const item = document.createElement('div');
+        item.className = 'news-item';
+        item.setAttribute('data-id', news.id);
+        
+        item.innerHTML = `
+          <span class="news-date">${news.date}</span>
+          <h4>${news.title}</h4>
+          <p>${news.content}</p>
+          <button class="delete-news-btn admin-only" style="display: none;" title="Delete announcement">✕</button>
+        `;
+
+        // Add delete button functionality
+        const deleteBtn = item.querySelector('.delete-news-btn');
+        if (deleteBtn) {
+          if (userRole === 'admin') {
+            deleteBtn.style.display = '';
+          }
+          deleteBtn.addEventListener('click', function() {
+            item.remove();
+            saveNews();
+          });
+        }
+
+        return item;
+      }
+
+      // Save news to localStorage
+      function saveNews() {
+        const news = [];
+        document.querySelectorAll('.news-item').forEach(item => {
+          news.push({
+            id: item.getAttribute('data-id'),
+            date: item.querySelector('.news-date').textContent,
+            title: item.querySelector('h4').textContent,
+            content: item.querySelector('p').textContent
+          });
+        });
+        localStorage.setItem('news', JSON.stringify(news));
+      }
+
+      // Load saved data
+      loadExcursions();
+      loadNews();
+
+      // Add Excursion Modal
+      const addExcursionBtn = document.getElementById('add-excursion');
+      const excursionModal = document.getElementById('excursion-modal');
+      const cancelExcursionBtn = document.getElementById('cancel-excursion');
+      const excursionForm = document.getElementById('excursion-form');
+      const imageInput = document.getElementById('excursion-image');
+      const imagePreview = document.getElementById('image-preview');
+      const previewImg = document.getElementById('preview-img');
+
+      // Image preview functionality
+      if (imageInput) {
+        imageInput.addEventListener('change', function() {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              previewImg.src = e.target.result;
+              imagePreview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+          } else {
+            imagePreview.style.display = 'none';
+          }
+        });
+      }
+
+      if (addExcursionBtn) {
+        addExcursionBtn.addEventListener('click', () => {
+          excursionModal.style.display = 'flex';
+        });
+      }
+
+      if (cancelExcursionBtn) {
+        cancelExcursionBtn.addEventListener('click', () => {
+          excursionModal.style.display = 'none';
+          excursionForm.reset();
+          imagePreview.style.display = 'none';
+        });
+      }
+
+      if (excursionForm) {
+        excursionForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          // Get form values
+          const title = document.getElementById('excursion-title').value;
+          const description = document.getElementById('excursion-description').value;
+          const imageFile = document.getElementById('excursion-image').files[0];
+          
+          if (imageFile) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              // Create new excursion card
+              const excursionGrid = document.querySelector('.excursion-grid');
+              const newExcursion = {
+                id: `excursion-${Date.now()}`,
+                title: title,
+                description: description,
+                image: e.target.result
+              };
+              
+              const excursionCard = createExcursionCard(newExcursion);
+              excursionGrid.appendChild(excursionCard);
+              saveExcursions();
+              
+              // Reset form and close modal
+              excursionForm.reset();
+              imagePreview.style.display = 'none';
+              excursionModal.style.display = 'none';
+            };
+            reader.readAsDataURL(imageFile);
+          }
+        });
+      }
+
+      // Add News Modal
+      const addNewsBtn = document.getElementById('add-news');
+      const newsModal = document.getElementById('news-modal');
+      const cancelNewsBtn = document.getElementById('cancel-news');
+      const newsForm = document.getElementById('news-form');
+
+      if (addNewsBtn) {
+        addNewsBtn.addEventListener('click', () => {
+          newsModal.style.display = 'flex';
+        });
+      }
+
+      if (cancelNewsBtn) {
+        cancelNewsBtn.addEventListener('click', () => {
+          newsModal.style.display = 'none';
+          newsForm.reset();
+        });
+      }
+
+      if (newsForm) {
+        newsForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          // Get form values
+          const title = document.getElementById('news-title').value;
+          const content = document.getElementById('news-content').value;
+          const date = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          
+          // Create new news item
+          const newsContent = document.getElementById('news-content');
+          const newNews = {
+            id: `news-${Date.now()}`,
+            date: date,
+            title: title,
+            content: content
+          };
+          
+          const newsItem = createNewsItem(newNews);
+          newsContent.appendChild(newsItem);
+          saveNews();
+          
+          // Reset form and close modal
+          newsForm.reset();
+          newsModal.style.display = 'none';
+        });
+      }
+
+      // Initialize delete buttons for existing items
+      function initializeDeleteButtons() {
+        // Initialize excursion delete buttons
+        document.querySelectorAll('.delete-excursion-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const excursionCard = this.closest('.excursion-card');
+            if (excursionCard) {
+              excursionCard.remove();
+              saveExcursions();
+            }
+          });
+        });
+
+        // Initialize news delete buttons
+        document.querySelectorAll('.delete-news-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const newsItem = this.closest('.news-item');
+            if (newsItem) {
+              newsItem.remove();
+              saveNews();
+            }
+          });
+        });
+      }
+
+      // Call initializeDeleteButtons after loading data
+      loadExcursions();
+      loadNews();
+      initializeDeleteButtons();
+
+      // Load saved hours
+      function loadHours() {
+        const savedHours = JSON.parse(localStorage.getItem('shorexHours')) || {
+          weekday: { start: '08:00', end: '20:00' },
+          saturday: { start: '09:00', end: '18:00' },
+          sunday: { start: '09:00', end: '17:00' }
+        };
+        
+        // Update the display
+        updateHoursDisplay(savedHours);
+        
+        // Set form values
+        document.getElementById('weekday-start').value = savedHours.weekday.start;
+        document.getElementById('weekday-end').value = savedHours.weekday.end;
+        document.getElementById('saturday-start').value = savedHours.saturday.start;
+        document.getElementById('saturday-end').value = savedHours.saturday.end;
+        document.getElementById('sunday-start').value = savedHours.sunday.start;
+        document.getElementById('sunday-end').value = savedHours.sunday.end;
+      }
+
+      // Update hours display
+      function updateHoursDisplay(hours) {
+        const hoursList = document.getElementById('hours-list');
+        hoursList.innerHTML = `
+          <div class="hours-item">
+            <span class="day">Monday - Friday</span>
+            <span class="time">${formatTime(hours.weekday.start)} - ${formatTime(hours.weekday.end)}</span>
+          </div>
+          <div class="hours-item">
+            <span class="day">Saturday</span>
+            <span class="time">${formatTime(hours.saturday.start)} - ${formatTime(hours.saturday.end)}</span>
+          </div>
+          <div class="hours-item">
+            <span class="day">Sunday</span>
+            <span class="time">${formatTime(hours.sunday.start)} - ${formatTime(hours.sunday.end)}</span>
+          </div>
+        `;
+      }
+
+      // Format time to 24-hour format
+      function formatTime(time) {
+        const [hours, minutes] = time.split(':');
+        return `${hours}:${minutes}`;
+      }
+
+      // Edit Hours Modal
+      const editHoursBtn = document.getElementById('edit-hours');
+      const hoursModal = document.getElementById('hours-modal');
+      const cancelHoursBtn = document.getElementById('cancel-hours');
+      const hoursForm = document.getElementById('hours-form');
+
+      if (editHoursBtn) {
+        editHoursBtn.addEventListener('click', () => {
+          hoursModal.style.display = 'flex';
+        });
+      }
+
+      if (cancelHoursBtn) {
+        cancelHoursBtn.addEventListener('click', () => {
+          hoursModal.style.display = 'none';
+        });
+      }
+
+      if (hoursForm) {
+        hoursForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const hours = {
+            weekday: {
+              start: document.getElementById('weekday-start').value,
+              end: document.getElementById('weekday-end').value
+            },
+            saturday: {
+              start: document.getElementById('saturday-start').value,
+              end: document.getElementById('saturday-end').value
+            },
+            sunday: {
+              start: document.getElementById('sunday-start').value,
+              end: document.getElementById('sunday-end').value
+            }
+          };
+          
+          // Save to localStorage
+          localStorage.setItem('shorexHours', JSON.stringify(hours));
+          
+          // Update display
+          updateHoursDisplay(hours);
+          
+          // Close modal
+          hoursModal.style.display = 'none';
+        });
+      }
+
+      // Load saved hours
+      loadHours();
+    });
+    </script>
+  </body>
+</html> 
